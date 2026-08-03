@@ -1,34 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    let bleachIndex = 0;
-    let bleachSlides = document.querySelectorAll("#bleach-slider .bleach-slide");
+    document.querySelectorAll(".anime-slider").forEach(function(slider) {
 
-    if (!bleachSlides.length) return;
+        let index = 0;
+        let slides = slider.querySelectorAll(".anime-slide");
+        let next = slider.querySelector(".slider-next");
+        let prev = slider.querySelector(".slider-prev");
 
-    function bleachChange(n) {
-        bleachSlides[bleachIndex].style.display = "none";
+        if (!slides.length) return;
 
-        bleachIndex += n;
+        function changeSlide(n) {
 
-        if (bleachIndex >= bleachSlides.length)
-            bleachIndex = 0;
+            slides[index].style.display = "none";
 
-        if (bleachIndex < 0)
-            bleachIndex = bleachSlides.length - 1;
+            index += n;
 
-        bleachSlides[bleachIndex].style.display = "block";
-    }
+            if (index >= slides.length) {
+                index = 0;
+            }
 
-    document.getElementById("bleach-next").onclick = function () {
-        bleachChange(1);
-    };
+            if (index < 0) {
+                index = slides.length - 1;
+            }
 
-    document.getElementById("bleach-prev").onclick = function () {
-        bleachChange(-1);
-    };
+            slides[index].style.display = "block";
+        }
 
-    setInterval(function () {
-        bleachChange(1);
-    }, 4000);
+        if (next) {
+            next.onclick = function () {
+                changeSlide(1);
+            };
+        }
+
+        if (prev) {
+            prev.onclick = function () {
+                changeSlide(-1);
+            };
+        }
+
+        setInterval(function () {
+            changeSlide(1);
+        }, 4000);
+
+    });
 
 });
