@@ -1,25 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.querySelectorAll(".toggle-button").forEach(function(button) {
+    document.querySelectorAll(".toggle-button").forEach(function (button) {
 
-        button.onclick = function () {
+        button.addEventListener("click", function () {
 
-            let target = document.getElementById(this.getAttribute("data-target"));
+            const target = document.getElementById(this.dataset.target);
 
-            // Was this section already open?
-            let wasOpen = target && target.style.display !== "none";
+            // Was the clicked section already open?
+            const wasOpen = target.style.display === "block";
 
-            // Hide all sections
-            document.querySelectorAll(".toggle-content").forEach(function(content) {
+            // Close all sections
+            document.querySelectorAll(".toggle-content").forEach(function (content) {
                 content.style.display = "none";
             });
 
-            // If it wasn't already open, show it
-            if (target && !wasOpen) {
-                target.style.display = "";
+            // If it wasn't open, open it.
+            if (!wasOpen) {
+                target.style.display = "block";
             }
 
-        };
+        });
 
     });
 
