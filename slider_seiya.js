@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initSaintSeiyaSlider() {
 
     document.querySelectorAll(".saint-seiya-slider").forEach(function(slider) {
 
@@ -54,4 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSaintSeiyaSlider);
+} else {
+    initSaintSeiyaSlider();
+}
