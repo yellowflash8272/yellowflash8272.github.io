@@ -9,12 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!slides.length) return;
 
-        slides.forEach(function(slide, i) {
-            slide.style.display = i === 0 ? "block" : "none";
-            slide.style.width = "100%";
-            slide.style.height = "auto";
-        });
-
         function changeSlide(n) {
 
             slides[index].style.display = "none";
