@@ -1,23 +1,52 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.querySelectorAll(".anime-slider").forEach(function(slider) {
+    document.querySelectorAll(".saint-seiya-slider").forEach(function(slider) {
 
         let index = 0;
-        let slides = slider.querySelectorAll(".anime-slide");
-        let next = slider.querySelector(".slider-next");
-        let prev = slider.querySelector(".slider-prev");
+        let slides = slider.querySelectorAll(".saint-seiya-slide");
+        let next = slider.querySelector(".saint-seiya-next");
+        let prev = slider.querySelector(".saint-seiya-prev");
 
         if (!slides.length) return;
 
+        slider.style.position = "relative";
+
+        /* Set up slides */
+
         slides.forEach(function(slide, i) {
+
             slide.style.position = "absolute";
             slide.style.top = "0";
             slide.style.left = "0";
             slide.style.width = "100%";
+            slide.style.height = "auto";
             slide.style.display = i === 0 ? "block" : "none";
+
         });
 
-        slider.style.position = "relative";
+        /* Set slider height to current image */
+
+        function updateHeight() {
+
+            let current = slides[index];
+
+            if (current.complete && current.naturalWidth) {
+
+                slider.style.height = current.offsetHeight + "px";
+
+            } else {
+
+                current.onload = function () {
+                    slider.style.height = current.offsetHeight + "px";
+                };
+
+            }
+
+        }
+
+        updateHeight();
+
+        /* Change slide */
 
         function changeSlide(n) {
 
@@ -34,23 +63,42 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             slides[index].style.display = "block";
+
+            updateHeight();
+
         }
 
+        /* Next */
+
         if (next) {
+
             next.onclick = function () {
                 changeSlide(1);
             };
+
         }
 
+        /* Previous */
+
         if (prev) {
+
             prev.onclick = function () {
                 changeSlide(-1);
             };
+
         }
+
+        /* Auto change every 6 seconds */
 
         setInterval(function () {
             changeSlide(1);
-        }, 4000);
+        }, 6000);
+
+        /* Keep correct size when browser is resized */
+
+        window.addEventListener("resize", function () {
+            updateHeight();
+        });
 
     });
 
