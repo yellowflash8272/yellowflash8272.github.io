@@ -14,6 +14,14 @@
 
             if (!slides.length) return;
 
+            function updateHeight() {
+                let current = slides[index];
+
+                if (current) {
+                    slider.style.height = current.offsetHeight + "px";
+                }
+            }
+
             function showSlide(newIndex) {
 
                 slides[index].style.display = "none";
@@ -21,6 +29,8 @@
                 index = newIndex;
 
                 slides[index].style.display = "block";
+
+                updateHeight();
             }
 
             function changeSlide(direction) {
@@ -49,6 +59,14 @@
                     changeSlide(-1);
                 });
             }
+
+            slides[0].addEventListener("load", updateHeight);
+
+            if (slides[0].complete) {
+                updateHeight();
+            }
+
+            window.addEventListener("resize", updateHeight);
 
             setInterval(function () {
                 changeSlide(1);
