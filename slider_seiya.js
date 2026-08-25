@@ -14,21 +14,62 @@
 
             if (!slides.length) return;
 
+            /* Put all images on top of each other */
+
+            slider.style.position = "relative";
+
+            slides.forEach(function(slide, i) {
+
+                slide.style.position = "absolute";
+                slide.style.top = "0";
+                slide.style.left = "0";
+                slide.style.width = "100%";
+                slide.style.height = "auto";
+                slide.style.display = "block";
+
+                if (i === 0) {
+                    slide.style.visibility = "visible";
+                } else {
+                    slide.style.visibility = "hidden";
+                }
+
+            });
+
+            /* Invisible image keeps the slider at the correct height */
+
+            let spacer = document.createElement("img");
+            spacer.src = slides[0].src;
+            spacer.style.width = "100%";
+            spacer.style.height = "auto";
+            spacer.style.display = "block";
+            spacer.style.visibility = "hidden";
+
+            slider.insertBefore(spacer, slides[0]);
+
+            function showSlide(newIndex) {
+
+                slides[index].style.visibility = "hidden";
+
+                index = newIndex;
+
+                slides[index].style.visibility = "visible";
+
+            }
+
             function changeSlide(direction) {
 
-                slides[index].style.display = "none";
+                let newIndex = index + direction;
 
-                index += direction;
-
-                if (index >= slides.length) {
-                    index = 0;
+                if (newIndex >= slides.length) {
+                    newIndex = 0;
                 }
 
-                if (index < 0) {
-                    index = slides.length - 1;
+                if (newIndex < 0) {
+                    newIndex = slides.length - 1;
                 }
 
-                slides[index].style.display = "block";
+                showSlide(newIndex);
+
             }
 
             if (next) {
@@ -42,6 +83,8 @@
                     changeSlide(-1);
                 };
             }
+
+            /* Auto change every 6 seconds */
 
             setInterval(function () {
                 changeSlide(1);
