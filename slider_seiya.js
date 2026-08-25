@@ -1,77 +1,67 @@
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-    document.querySelectorAll(".saint-seiya-slider").forEach(function(slider) {
+    function initSaintSeiyaSlider() {
 
-        let index = 0;
-        let slides = slider.querySelectorAll(".saint-seiya-slide");
-        let next = slider.querySelector(".saint-seiya-next");
-        let prev = slider.querySelector(".saint-seiya-prev");
+        document.querySelectorAll(".saint-seiya-slider").forEach(function(slider) {
 
-        if (!slides.length) return;
+            if (slider.dataset.sliderReady) return;
+            slider.dataset.sliderReady = "true";
 
-        function showSlide(newIndex) {
+            let index = 0;
+            let slides = slider.querySelectorAll(".saint-seiya-slide");
+            let next = slider.querySelector(".saint-seiya-next");
+            let prev = slider.querySelector(".saint-seiya-prev");
 
-            slides[index].style.display = "none";
+            if (!slides.length) return;
 
-            index = newIndex;
+            function showSlide(newIndex) {
 
-            slides[index].style.display = "block";
+                slides[index].style.display = "none";
 
-            updateHeight();
-        }
+                index = newIndex;
 
-        function changeSlide(n) {
-
-            let newIndex = index + n;
-
-            if (newIndex >= slides.length) {
-                newIndex = 0;
+                slides[index].style.display = "block";
             }
 
-            if (newIndex < 0) {
-                newIndex = slides.length - 1;
+            function changeSlide(direction) {
+
+                let newIndex = index + direction;
+
+                if (newIndex >= slides.length) {
+                    newIndex = 0;
+                }
+
+                if (newIndex < 0) {
+                    newIndex = slides.length - 1;
+                }
+
+                showSlide(newIndex);
             }
 
-            showSlide(newIndex);
-        }
-
-        function updateHeight() {
-
-            let currentSlide = slides[index];
-
-            if (currentSlide.complete && currentSlide.naturalHeight > 0) {
-                slider.style.height = currentSlide.offsetHeight + "px";
-            } else {
-                currentSlide.onload = function () {
-                    slider.style.height = currentSlide.offsetHeight + "px";
-                };
+            if (next) {
+                next.addEventListener("click", function () {
+                    changeSlide(1);
+                });
             }
-        }
 
-        if (next) {
-            next.onclick = function () {
+            if (prev) {
+                prev.addEventListener("click", function () {
+                    changeSlide(-1);
+                });
+            }
+
+            setInterval(function () {
                 changeSlide(1);
-            };
-        }
+            }, 4000);
 
-        if (prev) {
-            prev.onclick = function () {
-                changeSlide(-1);
-            };
-        }
+        });
 
-        if (slides[0].complete) {
-            updateHeight();
-        } else {
-            slides[0].onload = updateHeight;
-        }
+    }
 
-        window.addEventListener("resize", updateHeight);
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initSaintSeiyaSlider);
+    } else {
+        initSaintSeiyaSlider();
+    }
 
-        setInterval(function () {
-            changeSlide(1);
-        }, 4000);
-
-    });
-
-});
+})();
